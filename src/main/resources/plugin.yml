@@ -1,0 +1,7 @@
+name: Snowbrawl
+version: 2.0-SNAPSHOT
+description: "Redstoner's original minigame reborn for modern Minecraft."
+author: LogalDeveloper
+
+api-version: 1.18
+main: dev.logal.snowbrawl.Snowbrawl

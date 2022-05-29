@@ -1,0 +1,42 @@
+plugins {
+	id 'java'
+}
+
+group 'dev.logal.snowbrawl'
+version '2'
+
+repositories {
+	mavenCentral()
+
+	// Spigot
+	maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+	maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+	maven {
+		url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+
+		content {
+			includeGroup 'org.bukkit'
+			includeGroup 'org.spigotmc'
+		}
+	}
+
+	// CommandManager
+	maven { url 'https://git.nemez.net/api/v4/projects/52/packages/maven' }
+}
+
+dependencies {
+	compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
+
+	implementation 'net.nemez:cmdmgr:2.0.1'
+}
+
+jar {
+	manifest {
+		attributes "Class-Path": "../lib/cmdmgr-2.0.1.jar"
+	}
+}
+
+task deployToDevelopmentServer(dependsOn: build, type: Copy) {
+	from "$buildDir/libs/Snowbrawl-2.jar"
+	into "development-server/plugins/"
+}
