@@ -11,6 +11,7 @@ package dev.logal.snowbrawl.managers;
 import dev.logal.snowbrawl.Snowbrawl;
 import dev.logal.snowbrawl.types.Arena;
 import dev.logal.snowbrawl.types.Match;
+import dev.logal.snowbrawl.types.MatchParticipant;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
  * Handles queueing of players for matches, creating matches, and keeping track of those matches until conclusion.
  */
 public class MatchManager implements Listener, Runnable {
-	public static final int MAXIMUM_QUEUE_WAIT_TIME_TICKS = 300; // The maximum amount of ticks the queue will wait to start a match when all criteria for a match is met.
+	public static final int MAXIMUM_QUEUE_WAIT_TIME_TICKS = (20 * 120); // The maximum amount of ticks the queue will wait to start a match when all criteria for a match is met.
 
 	private final Snowbrawl snowbrawl;
 
@@ -96,8 +97,21 @@ public class MatchManager implements Listener, Runnable {
 	 *
 	 * @return A List containing players in the queue.
 	 */
-	public List<Player> getQueue(){
+	public List<Player> getQueuedPlayers(){
 		return new LinkedList<>(this.queue); // Return a copy rather than the reference to the original list.
+	}
+
+	/**
+	 * Gets a list of all players currently participating in matches.
+	 *
+	 * @return A list containing all known match participants.
+	 */
+	public List<MatchParticipant> getPlayersInMatches(){
+		final List<MatchParticipant> matchParticipants = new ArrayList<>();
+		for (Match match : this.matches){
+			matchParticipants.addAll(match.getParticipants());
+		}
+		return matchParticipants;
 	}
 
 	/**
@@ -179,7 +193,7 @@ public class MatchManager implements Listener, Runnable {
 		// TODO: This doesn't look like it filters users who are also in matches. It likely isn't a problem since the default boss bar is displayed first, then updated by the match. However, probably still worth fixing.
 		List<? extends Player> leftOverPlayers = this.snowbrawl.getServer().getOnlinePlayers().stream().collect(Collectors.toList());
 		// Remove queued players from the list.
-		leftOverPlayers.removeAll(this.snowbrawl.getMatchManager().getQueue());
+		leftOverPlayers.removeAll(this.getQueuedPlayers());
 
 		// Display a default boss bar instruction to players who are not queued and not in a match.
 		for (Player player : leftOverPlayers){
@@ -244,16 +258,37 @@ public class MatchManager implements Listener, Runnable {
 			return;
 		}
 
-		queueWaitTimeTicksRemaining -= 1;
+		queueWaitTimeTicksRemaining -= this.getQueueDecayRate();
 
 		final double bossBarProgress = (double) queueWaitTimeTicksRemaining / (double) MAXIMUM_QUEUE_WAIT_TIME_TICKS;
+		final int secondsRemaining = this.getQueueSecondsRemaining();
 		for (Player player : this.queue){
-			this.snowbrawl.getBossBarManager().setBossBar(player, "The next match will start in " + (queueWaitTimeTicksRemaining / 20 + 1) + " seconds.", BarColor.GREEN, BarStyle.SEGMENTED_10, bossBarProgress);
+			this.snowbrawl.getBossBarManager().setBossBar(player, "The next match will start in " + secondsRemaining + " seconds.", BarColor.GREEN, BarStyle.SEGMENTED_10, bossBarProgress);
 		}
 
 		// The above queue system works, but has some problems.
-		// TODO: Speed up timer based on how full the queue is. Maybe this can be done based on what percent of the server population is queued.
 		// TODO: Pick bigger maps (larger player limit) when bigger amounts of players are in the queue. The current pure RNG makes some odd choices at times.
+	}
+
+	/**
+	 * Gets how many ticks per second the queue wait time will decay given how many players online are queued and not in a match.
+	 *
+	 * @return The amount of ticks per second the queue wait time will decay, up to 10.
+	 */
+	public int getQueueDecayRate(){
+		final int availablePlayers = this.snowbrawl.getServer().getOnlinePlayers().size() - this.getPlayersInMatches().size(); // The amount of players online but not in a match.
+		final int queuedPlayers = this.getQueuedPlayers().size(); // The amount of queued players.
+
+		return (queuedPlayers / availablePlayers) * 10; // Return a value between 1 and 10
+	}
+
+	/**
+	 * Gets the amount of seconds remaining on the queue wait timer.
+	 *
+	 * @return The amount of seconds remaining.
+	 */
+	private int getQueueSecondsRemaining(){
+		return (this.queueWaitTimeTicksRemaining / (20 * this.getQueueDecayRate())) + 1;
 	}
 
 	/*
