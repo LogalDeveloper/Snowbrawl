@@ -12,7 +12,10 @@ import dev.logal.snowbrawl.Snowbrawl;
 import dev.logal.snowbrawl.types.Arena;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -559,18 +562,13 @@ public class ArenaManager implements Listener {
 	 */
 	@EventHandler
 	public void onEntityShootBow(final EntityShootBowEvent event){
-		final Entity entity = event.getEntity();
-		final Arena arena = this.getArenaByLocation(entity.getLocation());
+		final Arena arena = this.getArenaByLocation(event.getEntity().getLocation());
 
 		if (arena != null){ // Is the entity shooting from inside an arena?
+			event.setCancelled(true); // Cancel the original shot.
 			final Entity arrow = event.getProjectile(); // Get the arrow which was about to be shot.
-			final Entity snowball = entity.getWorld().spawnEntity(arrow.getLocation(), EntityType.SNOWBALL); // Spawn a new snowball at the arrow's location.
 
-			// TODO: This is not enough info to transfer information about the shooter. Dying entities only know they were killed by Snowball.
-			snowball.setVelocity(arrow.getVelocity()); // Copy the arrow's velocity to the new snowball.
-			snowball.setLastDamageCause(arrow.getLastDamageCause()); // Carry over damage cause from the arrow to the snowball.
-
-			event.setProjectile(snowball); // Change the projectile to the snowball.
+			event.getEntity().launchProjectile(Snowball.class).setVelocity(arrow.getVelocity()); // Make the shooter fire a snowball with the same velocity as the original arrow.
 		}
 	}
 
