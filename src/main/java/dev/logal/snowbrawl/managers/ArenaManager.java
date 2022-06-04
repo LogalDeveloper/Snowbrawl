@@ -28,10 +28,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.spigotmc.event.entity.EntityMountEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -414,13 +411,21 @@ public class ArenaManager implements Listener {
 		if (arena != null){
 			final Entity attacker = event.getDamager();
 
-			// Was the entity hit directly by a snowball?
-			if (attacker instanceof Snowball && event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)){
-				// After hours of testing, it seems Minecraft is extremely inconsistent about dealing damage to an entity from a projectile spawning an explosion.
-				// To try and make direct hits deal damage consistently, let's set the event damage to whatever is configured in the arena, then spawn a 0 power decorative explosion.
-				// Even this doesn't seem perfectly consistent, but it's the best solution so far.
-				event.setDamage(arena.getDamage());
-				attacker.getWorld().createExplosion(attacker.getLocation(), 0f, false, false, attacker);
+			// Was the attacker a snowball?
+			if (attacker instanceof final Snowball projectile){
+				// Was the entity hit directly by a snowball?
+				if (event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)){
+					// After hours of testing, it seems Minecraft is extremely inconsistent about dealing damage to an entity from a projectile spawning an explosion.
+					// To try and make direct hits deal damage consistently, let's set the event damage to whatever is configured in the arena, then spawn a 0 power decorative explosion.
+					// Even this doesn't seem perfectly consistent, but it's the best solution so far.
+					event.setDamage(arena.getDamage());
+					attacker.getWorld().createExplosion(attacker.getLocation(), 0f, false, false, attacker);
+				}
+
+				// Did the entity hit themselves with an explosion caused by their own snowball?
+				if (Objects.equals(projectile.getShooter(), event.getEntity()) && event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)){
+					event.setDamage(event.getDamage() * 0.25); // Reduce self-induced explosion damage by 75%
+				}
 			}
 		}
 	}
