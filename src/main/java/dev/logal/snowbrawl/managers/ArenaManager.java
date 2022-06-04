@@ -744,9 +744,8 @@ public class ArenaManager implements Listener {
 		final Arena arena = this.getArenaByLocation(player.getLocation());
 
 		if (arena != null){
-			// TODO: getClickedBlock doesn't only mean it was right clicked. It could also have been destroyed. This causes a bug where operators cannot delete snow blocks.
 			final Block rightClickedBlock = event.getClickedBlock();
-			if (rightClickedBlock != null && rightClickedBlock.getType().equals(Material.SNOW_BLOCK)){
+			if (rightClickedBlock != null && event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && rightClickedBlock.getType().equals(Material.SNOW_BLOCK)){ // Did the player right-click a snow block?
 				event.setCancelled(true);
 				PlayerInventory playerInventory = event.getPlayer().getInventory();
 				if (!playerInventory.containsAtLeast(new ItemStack(Material.SNOWBALL, arena.getRefill()), arena.getRefill())){ // Does this player already have at least the refill amount of snowballs?
