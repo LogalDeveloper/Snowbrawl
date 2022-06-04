@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Keeps track of boss bars on a per-player basis.
@@ -78,8 +79,8 @@ public class BossBarManager implements Listener {
 	 * Clears all boss bars owned by this boss bar manager.
 	 */
 	public void clearAllBossBars(){
-		// TODO: There was probably a ConcurrentModificationException caused here during a server shut down at one point.
-		for (Player player : this.bossBars.keySet()){
+		final List<Player> players = this.bossBars.keySet().stream().toList(); // Make copy of list of players to avoid concurrent modification.
+		for (Player player : players){
 			this.clearBossBar(player);
 		}
 	}
