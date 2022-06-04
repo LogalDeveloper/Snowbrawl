@@ -20,6 +20,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -335,6 +337,9 @@ public class Match {
 		MatchParticipant killer = this.getParticipant(victim.getPlayer().getKiller());
 		if (killer != null && killer != victim){
 			killer.awardKill();
+			if (this.getArena().getRegen() > 0){
+				killer.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, (int) (Math.round(this.getArena().getRegen() / 1.67 * 20)), 2)); // Award the killer with health regeneration over a period of time based on the arena's configured regen amount.
+			}
 		}
 
 		// Suppress global death message and only send to match participants.

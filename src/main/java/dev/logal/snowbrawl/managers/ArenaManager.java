@@ -906,6 +906,7 @@ public class ArenaManager implements Listener {
 		logger.info(" - Grace Time: " + arena.getGraceTime() + "s");
 		logger.info(" - Match Time: " + arena.getMatchTime() + "s");
 		logger.info(" - Damage: " + arena.getDamage() + " HP");
+		logger.info(" - Regen: " + arena.getRegen() + " HP");
 		logger.info(" - Mob Spawning Allowed: " + arena.isMobSpawningAllowed());
 		logger.info(" - World: " + arena.getWorld().getName());
 

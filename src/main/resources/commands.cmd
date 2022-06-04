@@ -96,6 +96,13 @@ command snowbrawl {
 			help Changes the amount of damage done per snowball hit in this arena.;
 		}
 
+		regen [int:regen] {
+			perm redstoner.snowbrawl.arena.config.regen;
+			run set_arena_regen name regen;
+			type all;
+			help Changes the amount of regen awarded to players per kill.;
+		}
+
 		allowmobspawning [boolean:mobspawningallowed] {
 			perm redstoner.snowbrawl.arena.config.mobspawningallowed;
 			run set_arena_mobspawningallowed name mobspawningallowed;

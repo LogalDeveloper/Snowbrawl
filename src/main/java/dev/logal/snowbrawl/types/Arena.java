@@ -26,6 +26,7 @@ public class Arena {
 	public static final int DEFAULT_GRACE_TIME = 15 * 20;
 	public static final int DEFAULT_MATCH_TIME = 300 * 20;
 	public static final int DEFAULT_DAMAGE = 4;
+	public static final int DEFAULT_REGEN = 4;
 	public static final boolean DEFAULT_MOB_SPAWNING_ALLOWED = false;
 	public static final double DEFAULT_POS1_X = 0, DEFAULT_POS1_Y = 0, DEFAULT_POS1_Z = 0;
 	public static final double DEFAULT_POS2_X = 0, DEFAULT_POS2_Y = 0, DEFAULT_POS2_Z = 0;
@@ -40,6 +41,7 @@ public class Arena {
 	private int playerLimit; // Maximum amount of players allowed in this arena in a match.
 	private int graceTime, matchTime;
 	private int damage; // Damage dealt to players per snowball hit.
+	private int regen; // Damage dealt to players per snowball hit.
 	private boolean allowMobSpawning;
 	private World world; // Which world the coordinates apply to.
 	private Location pos1, pos2; // Coordinates identifying the 2 corners of the arena.
@@ -223,6 +225,28 @@ public class Arena {
 		}
 
 		this.damage = damage;
+	}
+
+	/**
+	 * Gets the amount of HP awarded to players per kill.
+	 *
+	 * @return The amount of HP awarded.
+	 */
+	public int getRegen(){
+		return this.regen;
+	}
+
+	/**
+	 * Sets the amount of HP awards to players per kill.
+	 *
+	 * @param regen The amount of HP awarded.
+	 */
+	public void setRegen(final int regen){
+		if (regen < 0 || regen > 20){
+			throw new IllegalArgumentException("The regen must be between 0 and 20.");
+		}
+
+		this.regen = regen;
 	}
 
 	/**

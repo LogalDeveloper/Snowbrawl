@@ -225,11 +225,14 @@ public final class CommandHandler {
 		}
 
 		sender.sendMessage(successMessage("Configuration variables for arena " + arena.getName()) + ":");
+		sender.sendMessage(successMessage(" - Enabled: " + arena.isEnabled()));
 		sender.sendMessage(successMessage(" - Refill: " + arena.getRefill() + " snowballs"));
 		sender.sendMessage(successMessage(" - Player Limit: " + arena.getPlayerLimit() + " players"));
 		sender.sendMessage(successMessage(" - Grace Time: " + (arena.getGraceTime() / 20) + "s"));
 		sender.sendMessage(successMessage(" - Match Time: " + (arena.getMatchTime() / 20) + "s"));
 		sender.sendMessage(successMessage(" - Damage: " + arena.getDamage() + " HP"));
+		sender.sendMessage(successMessage(" - Regen: " + arena.getRegen() + " HP"));
+		sender.sendMessage(successMessage(" - Mob Spawning Allowed: " + arena.isMobSpawningAllowed()));
 		sender.sendMessage(successMessage(" - World: " + arena.getWorld().getName()));
 
 		Location pos1 = arena.getPos1(), pos2 = arena.getPos2();
@@ -378,7 +381,7 @@ public final class CommandHandler {
 	}
 
 	/**
-	 * Changes the amount of damage done per snowball hit in this arena.
+	 * Changes the amount of damage done per snowball hit in an arena.
 	 *
 	 * @param sender The user who executed the command.
 	 * @param name   The name of the arena.
@@ -404,6 +407,40 @@ public final class CommandHandler {
 		this.snowbrawl.saveConfig();
 	}
 
+	/**
+	 * Changes the amount of regen awarded to players per kill in an arena.
+	 *
+	 * @param sender The user who executed the command.
+	 * @param name The name of the arena.
+	 * @param regen The amount of regen for this arena.
+	 */
+	@Command(hook = "set_arena_regen")
+	public void commandArenasRegen(CommandSender sender, String name, int regen){
+		Arena arena = this.snowbrawl.getArenaManager().getArenaByName(name);
+		if (arena == null){
+			sender.sendMessage(failMessage("The specified arena does not exist."));
+			return;
+		}
+
+		int oldRegen = arena.getRegen();
+		try{
+			arena.setRegen(regen);
+		} catch (final IllegalArgumentException exception){
+			sender.sendMessage(failMessage(exception.getMessage()));
+			return;
+		}
+
+		sender.sendMessage(successMessage("The regen for arena " + arena.getName() + " has been changed from " + oldRegen + " HP to " + arena.getRegen() + " HP."));
+		this.snowbrawl.saveConfig();
+	}
+
+	/**
+	 * Changes whether mobs can spawn inside an arena.
+	 *
+	 * @param sender The use who executed the command.
+	 * @param name The name of the arena.
+	 * @param mobSpawningAllowed Whether mobs are allowed to spawn or not.
+	 */
 	@Command(hook = "set_arena_mobspawningallowed")
 	public void commandArenasMobSpawningAllowed(CommandSender sender, String name, boolean mobSpawningAllowed){
 		Arena arena = this.snowbrawl.getArenaManager().getArenaByName(name);
