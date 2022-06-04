@@ -578,7 +578,7 @@ public class ArenaManager implements Listener {
 	 * @param event The event.
 	 */
 	@EventHandler(ignoreCancelled = true)
-	public void onEntitySpawn(final EntitySpawnEvent event){
+	public void onCreatureSpawn(final CreatureSpawnEvent event){
 		final Arena arena = this.getArenaByLocation(event.getEntity().getLocation());
 		if (arena != null && !arena.isMobSpawningAllowed()){
 			event.setCancelled(true);
