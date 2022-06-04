@@ -35,6 +35,20 @@ command snowbrawl {
 		help Deletes an arena.;
 	}
 
+	arena [string:name] enable {
+		perm redstoner.snowbrawl.arena.enable;
+		run enable_arena name;
+		type all;
+		help Enables an arena.;
+	}
+
+	arena [string:name] disable {
+		perm redstoner.snowbrawl.arena.disable;
+		run disable_arena name;
+		type all;
+		help Disables an arena.;
+	}
+
 	arena [string:name] config {
 		run get_arena_config name;
 		type all;

@@ -140,6 +140,44 @@ public final class CommandHandler {
 	}
 
 	/**
+	 * Enable an arena.
+	 *
+	 * @param sender The user who executed the command.
+	 * @param name The name of the arena.
+	 */
+	@Command(hook = "enable_arena")
+	public void commandArenaEnable(CommandSender sender, String name){
+		Arena arena = this.snowbrawl.getArenaManager().getArenaByName(name);
+		if (arena == null){
+			sender.sendMessage(failMessage("The specified arena does not exist."));
+			return;
+		}
+
+		arena.setEnabled(true);
+		sender.sendMessage(successMessage("Arena " + arena.getName() + " has been enabled."));
+		this.snowbrawl.saveConfig();
+	}
+
+	/**
+	 * Disables an arena.
+	 *
+	 * @param sender The user who executed the command.
+	 * @param name The name of the arena.
+	 */
+	@Command(hook = "disable_arena")
+	public void commandArenaDisable(CommandSender sender, String name){
+		Arena arena = this.snowbrawl.getArenaManager().getArenaByName(name);
+		if (arena == null){
+			sender.sendMessage(failMessage("The specified arena does not exist."));
+			return;
+		}
+
+		arena.setEnabled(false);
+		sender.sendMessage(successMessage("Arena " + arena.getName() + " has been disabled."));
+		this.snowbrawl.saveConfig();
+	}
+
+	/**
 	 * Creates a new arena with a given name in a specific world.
 	 *
 	 * @param sender    The user who executed the command.

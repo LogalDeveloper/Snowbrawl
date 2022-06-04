@@ -20,6 +20,7 @@ import java.util.Random;
  */
 public class Arena {
 	// Default config variables
+	public static final boolean DEFAULT_ENABLED = false;
 	public static final int DEFAULT_REFILL = 16;
 	public static final int DEFAULT_PLAYER_LIMIT = 8;
 	public static final int DEFAULT_GRACE_TIME = 15 * 20;
@@ -32,6 +33,7 @@ public class Arena {
 	// Runtime variables
 	private final Random rng = new Random();
 	// Config variables
+	private boolean enabled; // Flag for whether the arena can be used in matches.
 	private String name; // A friendly name for this arena
 	private int refill; // Amount of snowballs to give players per snow block right click.
 	private int playerLimit; // Maximum amount of players allowed in this arena in a match.
@@ -44,6 +46,7 @@ public class Arena {
 	/**
 	 * Creates a new arena with a given name in a given world and sets all other attributes to the below defaults:
 	 * <ul>
+	 * <li>enabled = Arena.DEFAULT_ENABLED</li>
 	 * <li>refill = Arena.DEFAULT_REFILL</li>
 	 * <li>playerLimit = Arena.DEFAULT_PLAYER_LIMIT</li>
 	 * <li>graceTime = Arena.DEFAULT_GRACE_TIME</li>
@@ -66,6 +69,24 @@ public class Arena {
 		this.setWorld(world);
 		this.setPos1(new Location(this.getWorld(), 0, 0, 0));
 		this.setPos2(new Location(this.getWorld(), 0, 0, 0));
+	}
+
+	/**
+	 * Gets whether this arena can be used in matches. This value does not reflect if this arena is currently in use by a match. Instead, it only reflects an administrator's choice on if they want this arena to be used for matches.
+	 *
+	 * @return True if enabled, false otherwise.
+	 */
+	public boolean isEnabled(){
+		return this.enabled;
+	}
+
+	/**
+	 * Sets whether this arena can be used in matches. This value should not be updated to reflect if this arena is currently in use by a match. Instead, it should only reflect an administrators choice on if they want this arena to be used for matches.
+	 *
+	 * @param enabled The new enabled value.
+	 */
+	public void setEnabled(final boolean enabled){
+		this.enabled = enabled;
 	}
 
 	/**

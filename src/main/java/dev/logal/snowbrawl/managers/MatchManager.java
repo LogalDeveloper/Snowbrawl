@@ -122,10 +122,10 @@ public class MatchManager implements Listener, Runnable {
 	 * @return A list of available arenas.
 	 */
 	public List<Arena> getAvailableArenas(){
-		ArrayList<Arena> availableArenas = new ArrayList<>();
+		final List<Arena> availableArenas = new ArrayList<>();
 
 		for (Arena arena : this.snowbrawl.getArenaManager().getArenas()){
-			if (this.getMatchFromArena(arena) == null){
+			if (arena.isEnabled() && this.getMatchFromArena(arena) == null){
 				availableArenas.add(arena);
 			}
 		}

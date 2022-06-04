@@ -896,6 +896,7 @@ public class ArenaManager implements Listener {
 	private void logArenaInfo(Arena arena){
 		Logger logger = this.snowbrawl.getLogger();
 		logger.info(" - Name: " + arena.getName());
+		logger.info(" - Enabled: " + arena.isEnabled());
 		logger.info(" - Refill: " + arena.getRefill() + " snowballs");
 		logger.info(" - Player Limit: " + arena.getPlayerLimit() + " players");
 		logger.info(" - Grace Time: " + arena.getGraceTime() + "s");
