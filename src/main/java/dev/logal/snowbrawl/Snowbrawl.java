@@ -90,6 +90,7 @@ public final class Snowbrawl extends JavaPlugin {
 			newConfig.set("arenas." + id + ".graceTime", arena.getGraceTime());
 			newConfig.set("arenas." + id + ".matchTime", arena.getMatchTime());
 			newConfig.set("arenas." + id + ".damage", arena.getDamage());
+			newConfig.set("arenas." + id + ".mobspawningallowed", arena.isMobSpawningAllowed());
 			newConfig.set("arenas." + id + ".world", arena.getWorld().getName());
 
 			newConfig.set("arenas." + id + ".pos1.x", arena.getPos1().getX());
@@ -161,6 +162,7 @@ public final class Snowbrawl extends JavaPlugin {
 			arena.setGraceTime(config.getInt("arenas." + id + ".graceTime", Arena.DEFAULT_GRACE_TIME));
 			arena.setMatchTime(config.getInt("arenas." + id + ".matchTime", Arena.DEFAULT_MATCH_TIME));
 			arena.setDamage(config.getInt("arenas." + id + ".damage", Arena.DEFAULT_DAMAGE));
+			arena.setMobSpawningAllowed(config.getBoolean("arenas." + id + ".mobspawningallowed", Arena.DEFAULT_MOB_SPAWNING_ALLOWED));
 
 			// The world can be null because Arena overrides it with the actual world. Only the coordinates matter.
 			arena.setPos1(new Location(null, config.getDouble("arenas." + id + ".pos1.x", Arena.DEFAULT_POS1_X), config.getDouble("arenas." + id + ".pos1.y", Arena.DEFAULT_POS1_Y), config.getDouble("arenas." + id + ".pos1.z", Arena.DEFAULT_POS1_Z)));

@@ -96,6 +96,13 @@ command snowbrawl {
 			help Changes the amount of damage done per snowball hit in this arena.;
 		}
 
+		allowmobspawning [boolean:mobspawningallowed] {
+			perm redstoner.snowbrawl.arena.config.mobspawningallowed;
+			run set_arena_mobspawningallowed name mobspawningallowed;
+			type all;
+			help Sets whether mobs are allowed to spawn in this arena.;
+		}
+
 		bounds pos1 {
 			[block_x:x] [block_y:y] [block_z:z] {
 			   run set_arena_pos1 name x y z;

@@ -575,13 +575,16 @@ public class ArenaManager implements Listener {
 	}
 
 	/**
-	 * Not implemented.
+	 * Prevents entities from spawning inside of arenas with mob spawning set to disabled.
 	 *
 	 * @param event The event.
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void onEntitySpawn(final EntitySpawnEvent event){
-		// TODO: Add configurable option for preventing entity spawns in arenas.
+		final Arena arena = this.getArenaByLocation(event.getEntity().getLocation());
+		if (arena != null && !arena.isMobSpawningAllowed()){
+			event.setCancelled(true);
+		}
 	}
 
 	/**
@@ -902,6 +905,7 @@ public class ArenaManager implements Listener {
 		logger.info(" - Grace Time: " + arena.getGraceTime() + "s");
 		logger.info(" - Match Time: " + arena.getMatchTime() + "s");
 		logger.info(" - Damage: " + arena.getDamage() + " HP");
+		logger.info(" - Mob Spawning Allowed: " + arena.isMobSpawningAllowed());
 		logger.info(" - World: " + arena.getWorld().getName());
 
 		Location pos1 = arena.getPos1(), pos2 = arena.getPos2();

@@ -26,6 +26,7 @@ public class Arena {
 	public static final int DEFAULT_GRACE_TIME = 15 * 20;
 	public static final int DEFAULT_MATCH_TIME = 300 * 20;
 	public static final int DEFAULT_DAMAGE = 4;
+	public static final boolean DEFAULT_MOB_SPAWNING_ALLOWED = false;
 	public static final double DEFAULT_POS1_X = 0, DEFAULT_POS1_Y = 0, DEFAULT_POS1_Z = 0;
 	public static final double DEFAULT_POS2_X = 0, DEFAULT_POS2_Y = 0, DEFAULT_POS2_Z = 0;
 
@@ -39,6 +40,7 @@ public class Arena {
 	private int playerLimit; // Maximum amount of players allowed in this arena in a match.
 	private int graceTime, matchTime;
 	private int damage; // Damage dealt to players per snowball hit.
+	private boolean allowMobSpawning;
 	private World world; // Which world the coordinates apply to.
 	private Location pos1, pos2; // Coordinates identifying the 2 corners of the arena.
 
@@ -60,6 +62,7 @@ public class Arena {
 	public Arena(final String name, final World world){
 		this.setName(name);
 
+		this.setEnabled(DEFAULT_ENABLED);
 		this.setRefill(DEFAULT_REFILL);
 		this.setPlayerLimit(DEFAULT_PLAYER_LIMIT);
 		this.setGraceTime(DEFAULT_GRACE_TIME);
@@ -220,6 +223,24 @@ public class Arena {
 		}
 
 		this.damage = damage;
+	}
+
+	/**
+	 * Gets whether mobs are allowed to naturally spawn in this arena.
+	 *
+	 * @return True if mobs are allowed to spawn, false otherwise.
+	 */
+	public boolean isMobSpawningAllowed(){
+		return this.allowMobSpawning;
+	}
+
+	/**
+	 * Sets whether mobs are allowed to naturally spawn in this arena.
+	 *
+	 * @param allowMobSpawning
+	 */
+	public void setMobSpawningAllowed(final boolean allowMobSpawning){
+		this.allowMobSpawning = allowMobSpawning;
 	}
 
 	/**

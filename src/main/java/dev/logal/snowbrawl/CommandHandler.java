@@ -404,6 +404,25 @@ public final class CommandHandler {
 		this.snowbrawl.saveConfig();
 	}
 
+	@Command(hook = "set_arena_mobspawningallowed")
+	public void commandArenasMobSpawningAllowed(CommandSender sender, String name, boolean mobSpawningAllowed){
+		Arena arena = this.snowbrawl.getArenaManager().getArenaByName(name);
+		if (arena == null){
+			sender.sendMessage(failMessage("The specified arena does not exist."));
+			return;
+		}
+
+		arena.setMobSpawningAllowed(mobSpawningAllowed);
+
+		if (mobSpawningAllowed){
+			sender.sendMessage(successMessage("Mob spawning is now allowed in arena " + arena.getName() + "."));
+		} else {
+			sender.sendMessage(successMessage("Mob spawning is now blocked in arena " + arena.getName() + "."));
+		}
+
+		this.snowbrawl.saveConfig();
+	}
+
 	/**
 	 * Sets one corner of this arena's bounds to the given coordinates.
 	 *
