@@ -276,10 +276,19 @@ public class MatchManager implements Listener, Runnable {
 	 * @return The amount of ticks per second the queue wait time will decay, up to 10.
 	 */
 	public int getQueueDecayRate(){
-		final int availablePlayers = this.snowbrawl.getServer().getOnlinePlayers().size() - this.getPlayersInMatches().size(); // The amount of players online but not in a match.
-		final int queuedPlayers = this.getQueuedPlayers().size(); // The amount of queued players.
+		final float availablePlayers = this.snowbrawl.getServer().getOnlinePlayers().size() - this.getPlayersInMatches().size(); // The amount of players online but not in a match.
+		final float queuedPlayers = this.getQueuedPlayers().size(); // The amount of queued players.
 
-		return (queuedPlayers / availablePlayers) * 10; // Return a value between 1 and 10
+		final int decayRate = (int) (queuedPlayers / availablePlayers) * 10;
+
+		// Clamp decay rate between 1 and 10 ticks per second.
+		if (decayRate < 1){
+			return 1;
+		} else if (decayRate > 10){
+			return 10;
+		} else {
+			return decayRate;
+		}
 	}
 
 	/**
