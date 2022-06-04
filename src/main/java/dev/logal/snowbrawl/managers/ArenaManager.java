@@ -824,8 +824,7 @@ public class ArenaManager implements Listener {
 				// TODO: Support stained glass.
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 0));
 			} else if (material.equals(Material.OBSIDIAN)){
-				// TODO: May need to be buffed. Damage resistance I really doesn't feel like much.
-				player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 300, 0));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 300, 1));
 			}
 		} else {
 			this.playersInArenas.remove(player);
