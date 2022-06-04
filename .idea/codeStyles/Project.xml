@@ -1,0 +1,82 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <option name="OTHER_INDENT_OPTIONS">
+      <value>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </value>
+    </option>
+    <HTMLCodeStyleSettings>
+      <option name="HTML_KEEP_LINE_BREAKS" value="false" />
+    </HTMLCodeStyleSettings>
+    <JavaCodeStyleSettings>
+      <option name="JD_ADD_BLANK_AFTER_PARM_COMMENTS" value="true" />
+      <option name="JD_ADD_BLANK_AFTER_RETURN" value="true" />
+      <option name="JD_KEEP_INVALID_TAGS" value="false" />
+    </JavaCodeStyleSettings>
+    <Markdown>
+      <option name="WRAP_TEXT_IF_LONG" value="false" />
+    </Markdown>
+    <codeStyleSettings language="Groovy">
+      <option name="KEEP_LINE_BREAKS" value="false" />
+      <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
+      <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
+      <option name="SPACE_BEFORE_METHOD_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_IF_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_WHILE_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_FOR_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_SWITCH_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_TRY_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_CATCH_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_SYNCHRONIZED_LBRACE" value="false" />
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="HTML">
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="JAVA">
+      <option name="KEEP_LINE_BREAKS" value="false" />
+      <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
+      <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
+      <option name="SPACE_BEFORE_METHOD_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_IF_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_WHILE_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_FOR_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_SWITCH_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_TRY_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_CATCH_LBRACE" value="false" />
+      <option name="SPACE_BEFORE_SYNCHRONIZED_LBRACE" value="false" />
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="JSON">
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="Markdown">
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="Shell Script">
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="TOML">
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="XML">
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+  </code_scheme>
+</component>
