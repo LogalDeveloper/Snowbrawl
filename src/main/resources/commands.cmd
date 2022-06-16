@@ -61,6 +61,20 @@ command snowbrawl {
 			help Changes the name of an arena.;
 		}
 
+		subtitle {
+			perm redstoner.snowbrawl.arena.config.subtitle;
+			run clear_arena_subtitle name;
+			type all;
+			help Clears the subtitle of an arena.;
+		}
+
+		subtitle [string:new_subtitle...] {
+			perm redstoner.snowbrawl.arena.config.subtitle;
+			run set_arena_subtitle name new_subtitle;
+			type all;
+			help Changes the subtitle of an arena.;
+		}
+
 		refill [int:amount] {
 			perm redstoner.snowbrawl.arena.config.refill;
 			run set_arena_refill name amount;

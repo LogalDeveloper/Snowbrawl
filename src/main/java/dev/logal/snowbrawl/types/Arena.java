@@ -13,6 +13,7 @@ import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -21,6 +22,7 @@ import java.util.Random;
 public class Arena {
 	// Default config variables
 	public static final boolean DEFAULT_ENABLED = false;
+	public static final String DEFAULT_SUBTITLE = "";
 	public static final int DEFAULT_REFILL = 16;
 	public static final int DEFAULT_PLAYER_LIMIT = 8;
 	public static final int DEFAULT_GRACE_TIME = 15 * 20;
@@ -36,7 +38,7 @@ public class Arena {
 	private final Random rng = new Random();
 	// Config variables
 	private boolean enabled; // Flag for whether the arena can be used in matches.
-	private String name; // A friendly name for this arena
+	private String name, subtitle; // A friendly name and subtitle for this arena
 	private int refill; // Amount of snowballs to give players per snow block right click.
 	private int playerLimit; // Maximum amount of players allowed in this arena in a match.
 	private int graceTime, matchTime;
@@ -51,6 +53,7 @@ public class Arena {
 	 * Creates a new arena with a given name in a given world and sets all other attributes to the below defaults:
 	 * <ul>
 	 * <li>enabled = Arena.DEFAULT_ENABLED</li>
+	 * <li>subtitle = Arena.DEFAULT_SUBTITLE</li>
 	 * <li>refill = Arena.DEFAULT_REFILL</li>
 	 * <li>playerLimit = Arena.DEFAULT_PLAYER_LIMIT</li>
 	 * <li>graceTime = Arena.DEFAULT_GRACE_TIME</li>
@@ -65,6 +68,7 @@ public class Arena {
 		this.setName(name);
 
 		this.setEnabled(DEFAULT_ENABLED);
+		this.setSubtitle(DEFAULT_SUBTITLE);
 		this.setRefill(DEFAULT_REFILL);
 		this.setPlayerLimit(DEFAULT_PLAYER_LIMIT);
 		this.setGraceTime(DEFAULT_GRACE_TIME);
@@ -115,6 +119,24 @@ public class Arena {
 		}
 
 		this.name = name.replaceAll(" ", "_");
+	}
+
+	/**
+	 * Gets the subtitle for this arena.
+	 *
+	 * @return The subtitle.
+	 */
+	public String getSubtitle(){
+		return this.subtitle;
+	}
+
+	/**
+	 * Changes the subtitle for this arena. Can be used to give credit to the author or something like that.
+	 *
+	 * @param subtitle The new subtitle.
+	 */
+	public void setSubtitle(final String subtitle){
+		this.subtitle = Objects.requireNonNullElse(subtitle, ""); // Convert null to empty string.
 	}
 
 	/**

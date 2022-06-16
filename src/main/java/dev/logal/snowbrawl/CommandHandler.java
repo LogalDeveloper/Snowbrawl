@@ -226,6 +226,7 @@ public final class CommandHandler {
 
 		sender.sendMessage(successMessage("Configuration variables for arena " + arena.getName()) + ":");
 		sender.sendMessage(successMessage(" - Enabled: " + arena.isEnabled()));
+		sender.sendMessage(successMessage(" - Subtitle: " + arena.getSubtitle()));
 		sender.sendMessage(successMessage(" - Refill: " + arena.getRefill() + " snowballs"));
 		sender.sendMessage(successMessage(" - Player Limit: " + arena.getPlayerLimit() + " players"));
 		sender.sendMessage(successMessage(" - Grace Time: " + (arena.getGraceTime() / 20) + "s"));
@@ -268,7 +269,48 @@ public final class CommandHandler {
 			return;
 		}
 
-		sender.sendMessage(successMessage("The name for arena " + oldName + " has been changed to " + arena.getName()));
+		sender.sendMessage(successMessage("The name for arena " + oldName + " has been changed to " + arena.getName()) + ".");
+		this.snowbrawl.saveConfig();
+	}
+
+	/**
+	 * Clears the subtitle of an arena.
+	 *
+	 * @param sender  The user who executed the command.
+	 * @param name    The name of the arena.
+	 */
+	@Command(hook = "clear_arena_subtitle")
+	public void commandArenaConfigSubtitleClear(CommandSender sender, String name){
+		Arena arena = this.snowbrawl.getArenaManager().getArenaByName(name);
+		if (arena == null){
+			sender.sendMessage(failMessage("The specified arena does not exist."));
+			return;
+		}
+
+		arena.setSubtitle("");
+
+		sender.sendMessage(successMessage("The subtitle for arena " + arena.getName() + " has been cleared."));
+		this.snowbrawl.saveConfig();
+	}
+
+	/**
+	 * Changes the subtitle of an arena.
+	 *
+	 * @param sender  The user who executed the command.
+	 * @param name    The name of the arena.
+	 * @param newSubtitle The new name for the arena.
+	 */
+	@Command(hook = "set_arena_subtitle")
+	public void commandArenaConfigSubtitle(CommandSender sender, String name, String newSubtitle){
+		Arena arena = this.snowbrawl.getArenaManager().getArenaByName(name);
+		if (arena == null){
+			sender.sendMessage(failMessage("The specified arena does not exist."));
+			return;
+		}
+
+		arena.setSubtitle(newSubtitle);
+
+		sender.sendMessage(successMessage("The name for arena " + arena.getName() + " has been changed to '" + arena.getSubtitle()) + "'.");
 		this.snowbrawl.saveConfig();
 	}
 

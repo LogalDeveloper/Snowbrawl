@@ -812,8 +812,7 @@ public class ArenaManager implements Listener {
 
 		if (arena != null){ // Did this player move into an arena's bounding box?
 			if (this.playersInArenas.get(player) != arena){ // Is the arena they entered different than the one they were last in? (Including not in an arena)
-				// TODO: Add configurable arena subtitle (such as for giving credit to the arena's builders)
-				player.sendTitle(ChatColor.AQUA + "" + arena.getName(), "", 10, 70, 20); // Display a title screen with the arena's name.
+				player.sendTitle(ChatColor.AQUA + "" + arena.getName(), ChatColor.GOLD + "" + arena.getSubtitle(), 10, 70, 20); // Display a title screen with the arena's name.
 				this.playersInArenas.put(player, arena); // Store which arena the player is in for future checks.
 			}
 
@@ -900,6 +899,7 @@ public class ArenaManager implements Listener {
 	private void logArenaInfo(Arena arena){
 		Logger logger = this.snowbrawl.getLogger();
 		logger.info(" - Name: " + arena.getName());
+		logger.info(" - Subtitle: " + arena.getSubtitle());
 		logger.info(" - Enabled: " + arena.isEnabled());
 		logger.info(" - Refill: " + arena.getRefill() + " snowballs");
 		logger.info(" - Player Limit: " + arena.getPlayerLimit() + " players");

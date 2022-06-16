@@ -85,6 +85,7 @@ public final class Snowbrawl extends JavaPlugin {
 
 			newConfig.set("arenas." + id + ".enabled", arena.isEnabled());
 			newConfig.set("arenas." + id + ".name", arena.getName());
+			newConfig.set("arenas." + id + ".subtitle", arena.getSubtitle());
 			newConfig.set("arenas." + id + ".refill", arena.getRefill());
 			newConfig.set("arenas." + id + ".playerLimit", arena.getPlayerLimit());
 			newConfig.set("arenas." + id + ".graceTime", arena.getGraceTime());
@@ -158,6 +159,7 @@ public final class Snowbrawl extends JavaPlugin {
 			// Finally, we populate all the configuration variables.
 			// If any of these config options don't exist in the config file, then default to the defaults defined in Arena.
 			arena.setEnabled(config.getBoolean("arenas." + id + ".enabled", Arena.DEFAULT_ENABLED));
+			arena.setSubtitle(config.getString("arenas." + id + ".subtitle", Arena.DEFAULT_SUBTITLE));
 			arena.setRefill(config.getInt("arenas." + id + ".refill", Arena.DEFAULT_REFILL));
 			arena.setPlayerLimit(config.getInt("arenas." + id + ".playerLimit", Arena.DEFAULT_PLAYER_LIMIT));
 			arena.setGraceTime(config.getInt("arenas." + id + ".graceTime", Arena.DEFAULT_GRACE_TIME));
