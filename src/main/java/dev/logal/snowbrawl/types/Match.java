@@ -138,6 +138,7 @@ public class Match {
 	public boolean tick(){
 		if (this.getParticipants().size() < 2){
 			this.endMatch();
+			return false;
 		}
 
 		// First tick of grace period.
@@ -243,32 +244,39 @@ public class Match {
 		// For each player still a member of the match
 		for (MatchParticipant participant : this.getParticipants()){
 			final Player player = participant.getPlayer();
+
 			player.setGameMode(GameMode.SPECTATOR);
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("")); // Clear action bar.
 			player.teleport(player.getWorld().getSpawnLocation()); // TODO: This maybe needs to be a configurable "global spawn" so that arenas can live in dedicated worlds, if needed.
 			player.getInventory().clear();
 			player.updateInventory();
 
+			// Show a title indicating the match is over and what place the player achieved on the leaderboard.
+			final int place = leaderboard.indexOf(participant);
+			final String title;
+			final String subtitle = "You placed #" + (place + 1) + " on the leaderboard.";
+			if (place == 0){
+				title = "WINNER WINNER CHICKEN DINNER!";
+			} else {
+				title = "Game over.";
+			}
+			player.sendTitle(ChatColor.GOLD + title, ChatColor.YELLOW + subtitle, 10, 70, 20);
+
 			// Start printing conclusion message
 			player.sendMessage(ChatColor.GREEN + "----------== [ MATCH SUMMARY ] ==----------");
 			player.sendMessage(ChatColor.YELLOW + "Top Players:");
 			// For the top 3 slots of the leaderboard, if a player is present, display their stats.
-			for (int place = 0; place <= 2; place++){
-				if (place >= leaderboard.size()){
-					break;
+			for (int leaderboardPlace = 0; leaderboardPlace <= 2; leaderboardPlace++){
+				if (leaderboardPlace >= leaderboard.size()){
+					break; // Stop printing the leaderboard if there is fewer players in the match than places on the leaderboard we are printing.
 				}
 
 				final MatchParticipant leaderboardPlayer = leaderboard.get(place);
-
-				if (place == 0){ // TODO: Good meme, but is this the right place to do this?
-					leaderboardPlayer.getPlayer().sendTitle(ChatColor.GOLD + "WINNER WINNER CHICKEN DINNER!", ChatColor.YELLOW + "You got that bread.", 10, 70, 20);
-				} // TODO: Add titles for other places, at least second and third.
-
-				player.sendMessage(ChatColor.YELLOW + " - " + (place + 1) + ": " + leaderboardPlayer.getPlayer().getName() + ": " + ChatColor.GOLD + ChatColor.BOLD + leaderboardPlayer.getScore() + ChatColor.YELLOW + " (" + ChatColor.GREEN + leaderboardPlayer.getKills() + ChatColor.YELLOW + "/" + ChatColor.RED + leaderboardPlayer.getDeaths() + ChatColor.YELLOW + ")");
+				player.sendMessage(ChatColor.YELLOW + " - " + (leaderboardPlace + 1) + ": " + leaderboardPlayer.getPlayer().getName() + ": " + ChatColor.GOLD + ChatColor.BOLD + leaderboardPlayer.getScore() + ChatColor.YELLOW + " (" + ChatColor.GREEN + leaderboardPlayer.getKills() + ChatColor.YELLOW + "/" + ChatColor.RED + leaderboardPlayer.getDeaths() + ChatColor.YELLOW + ")"); // 1: Player: 2 (4/2)
 
 			}
 
-			// Display this player's own stats.
+			// Display this player's own stats at the end.
 			player.sendMessage();
 			player.sendMessage(ChatColor.YELLOW + "Your score: " + ChatColor.GOLD + ChatColor.BOLD + participant.getScore() + ChatColor.YELLOW + " (" + ChatColor.GREEN + participant.getKills() + ChatColor.YELLOW + "/" + ChatColor.RED + participant.getDeaths() + ChatColor.YELLOW + ")");
 			// Conclusion.
