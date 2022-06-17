@@ -482,6 +482,22 @@ public class ArenaManager implements Listener {
 	}
 
 	/**
+	 * Prevents exploding entities from destroying blocks inside of arenas.
+	 *
+	 * @param event The event.
+	 */
+	@EventHandler(ignoreCancelled = true)
+	public void onEntityExplode(final EntityExplodeEvent event){
+		final Entity entity = event.getEntity();
+		final Arena arena = this.getArenaByLocation(entity.getLocation());
+
+		if (arena != null){
+			event.setCancelled(true); // Cancel the explosion this entity was about to create.
+			event.getEntity().getWorld().createExplosion(entity.getLocation(), 3f, false, false, entity); // Make a new one in the entity's place, but don't break blocks or create fire.
+		}
+	}
+
+	/**
 	 * Prevents entities from interacting with blocks inside of arenas.
 	 *
 	 * @param event The event.
