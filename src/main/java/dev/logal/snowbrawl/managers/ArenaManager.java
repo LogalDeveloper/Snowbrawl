@@ -404,7 +404,7 @@ public class ArenaManager implements Listener {
 	 *
 	 * @param event The event.
 	 */
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onEntityDamageByEntity(final EntityDamageByEntityEvent event){
 		final Arena arena = this.getArenaByLocation(event.getEntity().getLocation());
 

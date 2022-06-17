@@ -15,6 +15,7 @@ import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -360,6 +361,17 @@ public class Match {
 		// Clear the player's inventory.
 		victimPlayer.getInventory().clear();
 		victimPlayer.updateInventory();
+	}
+
+	/**
+	 * Prevents entities from damaging each other during grace time.
+	 *
+	 * @param event The event.
+	 */
+	public void onEntityDamageByEntity(final EntityDamageByEntityEvent event){
+		if (this.graceTimeTicksRemaining > 0){
+			event.setCancelled(true);
+		}
 	}
 
 	/**

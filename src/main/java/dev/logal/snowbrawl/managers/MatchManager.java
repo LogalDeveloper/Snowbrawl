@@ -21,10 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.EntityPlaceEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 
 import java.util.ArrayList;
@@ -422,6 +419,22 @@ public class MatchManager implements Listener, Runnable {
 		Match match = this.getMatchFromPlayer(player);
 		if (match != null){
 			match.onPlayerDeath(event);
+		}
+	}
+
+	/**
+	 * Notifies appropriate matches of entity damages by players.
+	 *
+	 * @param event The event.
+	 */
+	@EventHandler(ignoreCancelled = true)
+	public void onEntityDamageByEntity(final EntityDamageByEntityEvent event){
+		final Arena arena = this.snowbrawl.getArenaManager().getArenaByLocation(event.getEntity().getLocation());
+		if (arena != null){
+			final Match match = this.getMatchFromArena(arena);
+			if (match != null){
+				match.onEntityDamageByEntity(event);
+			}
 		}
 	}
 
