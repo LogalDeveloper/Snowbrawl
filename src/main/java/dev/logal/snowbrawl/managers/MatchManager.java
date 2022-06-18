@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 /**
  * Handles queueing of players for matches, creating matches, and keeping track of those matches until conclusion.
@@ -186,15 +185,9 @@ public class MatchManager implements Listener, Runnable {
 	}
 
 	private void updateQueue(){
-		// TODO: The next 2 lines look cringe and make IntelliJ very unhappy. It works and hasn't yet thrown an exception, but maybe it can be done better.
-		// TODO: This doesn't look like it filters users who are also in matches. It likely isn't a problem since the default boss bar is displayed first, then updated by the match. However, probably still worth fixing.
-		List<? extends Player> leftOverPlayers = this.snowbrawl.getServer().getOnlinePlayers().stream().collect(Collectors.toList());
-		// Remove queued players from the list.
-		leftOverPlayers.removeAll(this.getQueuedPlayers());
-
 		// Display a default boss bar instruction to players who are not queued and not in a match.
-		for (Player player : leftOverPlayers){
-			if (this.snowbrawl.getMatchManager().getMatchFromPlayer(player) == null){
+		for (Player player : this.snowbrawl.getServer().getOnlinePlayers()){
+			if (!this.isInQueue(player) && this.snowbrawl.getMatchManager().getMatchFromPlayer(player) == null){
 				this.snowbrawl.getBossBarManager().setBossBar(player, "You are not in the queue. Run /sb to queue for a match.", BarColor.YELLOW, BarStyle.SOLID, 1.0);
 			}
 		}
