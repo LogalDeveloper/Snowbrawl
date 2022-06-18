@@ -272,7 +272,7 @@ public class Match {
 					break; // Stop printing the leaderboard if there is fewer players in the match than places on the leaderboard we are printing.
 				}
 
-				final MatchParticipant leaderboardPlayer = leaderboard.get(place);
+				final MatchParticipant leaderboardPlayer = leaderboard.get(leaderboardPlace);
 				player.sendMessage(ChatColor.YELLOW + " - " + (leaderboardPlace + 1) + ": " + leaderboardPlayer.getPlayer().getName() + ": " + ChatColor.GOLD + ChatColor.BOLD + leaderboardPlayer.getScore() + ChatColor.YELLOW + " (" + ChatColor.GREEN + leaderboardPlayer.getKills() + ChatColor.YELLOW + "/" + ChatColor.RED + leaderboardPlayer.getDeaths() + ChatColor.YELLOW + ")"); // 1: Player: 2 (4/2)
 
 			}
