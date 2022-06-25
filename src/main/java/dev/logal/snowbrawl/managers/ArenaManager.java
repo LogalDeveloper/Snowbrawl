@@ -828,7 +828,7 @@ public class ArenaManager implements Listener {
 
 		if (arena != null){ // Did this player move into an arena's bounding box?
 			if (this.playersInArenas.get(player) != arena){ // Is the arena they entered different than the one they were last in? (Including not in an arena)
-				player.sendTitle(ChatColor.AQUA + "" + arena.getName(), ChatColor.GOLD + "" + arena.getSubtitle(), 10, 70, 20); // Display a title screen with the arena's name.
+				player.sendTitle(ChatColor.AQUA + "" + arena.getName().replaceAll("_", " "), ChatColor.GOLD + "" + arena.getSubtitle(), 10, 70, 20); // Display a title screen with the arena's name.
 				this.playersInArenas.put(player, arena); // Store which arena the player is in for future checks.
 			}
 
