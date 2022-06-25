@@ -24,10 +24,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Represents the state of a match taking place in an arena.
@@ -35,6 +32,7 @@ import java.util.List;
 public class Match {
 	private final Snowbrawl snowbrawl;
 
+	private final UUID uuid = UUID.randomUUID();
 	private final Arena arena;
 	private final List<MatchParticipant> participants;
 	private int graceTimeTicksRemaining; // The amount of grace time remaining in ticks.
@@ -58,6 +56,14 @@ public class Match {
 
 		this.graceTimeTicksRemaining = arena.getGraceTime();
 		this.matchTimeTicksRemaining = arena.getMatchTime();
+
+		this.logInfo("Match initialized.");
+		this.logInfo(" - Arena: " + this.arena.getName());
+		this.logInfo(" - Participants: ");
+		for (final MatchParticipant participant : this.getParticipants()){
+			final Player player = participant.getPlayer();
+			this.logInfo("   - " + player.getUniqueId() + " (" + player.getName() + ")");
+		}
 	}
 
 	/**
@@ -128,6 +134,7 @@ public class Match {
 		final boolean success = this.participants.remove(participant);
 		if (success){
 			this.broadcastMessageToPlayers(ChatColor.RED + participant.getPlayer().getName() + " has been removed from the the match.");
+			this.logInfo(participant.getPlayer().getUniqueId() + " (" + participant.getPlayer().getName() + ") has been removed from the match.");
 		}
 	}
 
@@ -144,6 +151,7 @@ public class Match {
 
 		// First tick of grace period.
 		if (graceTimeTicksRemaining >= arena.getGraceTime()){
+			this.logInfo("Grace period started.");
 			final double bossBarProgress = (double) graceTimeTicksRemaining / (double) (arena.getGraceTime());
 			for (MatchParticipant participant : this.getParticipants()){
 				final Player player = participant.getPlayer();
@@ -183,6 +191,7 @@ public class Match {
 
 		// No more grace time remaining, first tick of match.
 		if (matchTimeTicksRemaining >= arena.getMatchTime()){
+			this.logInfo("Grace period ended. Match starting.");
 			for (MatchParticipant participant : this.getParticipants()){
 				final Player player = participant.getPlayer();
 				player.teleport(this.arena.getRandomSpawnPoint());
@@ -241,6 +250,15 @@ public class Match {
 
 		// Get final leaderboard.
 		final List<MatchParticipant> leaderboard = this.getLeaderboard();
+
+		// Log leaderboard to console.
+		this.logInfo("Match ended.");
+		this.logInfo(" - Leaderboard:");
+		for (int i = 0; i < leaderboard.size(); i++){
+			final MatchParticipant participant = leaderboard.get(i);
+			final Player player = participant.getPlayer();
+			this.logInfo("   - " + (i + 1) + ": " + player.getUniqueId() + " (" + player.getName() + "): " + participant.getScore() + " (" + participant.getKills() + "K/" + participant.getDeaths() + "D)");
+		}
 
 		// For each player still a member of the match
 		for (MatchParticipant participant : this.getParticipants()){
@@ -353,6 +371,11 @@ public class Match {
 
 		// Suppress global death message and only send to match participants.
 		this.broadcastMessageToPlayers(ChatColor.GRAY + "" + ChatColor.ITALIC + event.getDeathMessage());
+
+		// Log death message to console.
+		this.logInfo(event.getDeathMessage());
+
+		// Suppress vanilla death message.
 		event.setDeathMessage(null);
 
 		// Force the player to respawn in one second.
@@ -381,5 +404,9 @@ public class Match {
 	 */
 	public void onPlayerRespawn(final PlayerRespawnEvent event){
 		event.setRespawnLocation(this.getArena().getRandomSpawnPoint());
+	}
+
+	private void logInfo(final String message){
+		this.snowbrawl.getLogger().info("[Match " + this.uuid + "] " + message);
 	}
 }
